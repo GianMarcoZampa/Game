@@ -1,9 +1,8 @@
 import pygame
 
-
 ws = 1000  # Screen's width
 hs = 750  # Screen's height
-bg = pygame.image.load('images\background\BG.png')  # Background image
+bg = pygame.image.load('images\Background\BG.png')  # Background image
 
 pygame.init()
 win = pygame.display.set_mode((ws, hs))
@@ -17,6 +16,5 @@ while run:
 
     win.blit(bg, (0, 0))
     pygame.display.update()
-
 
 pygame.quit()

@@ -13,6 +13,8 @@ player_1 = Player(0, 600)
 
 run = True
 while run:
+    pygame.time.Clock().tick(30)
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
@@ -28,6 +30,12 @@ while run:
     if not (keys[pygame.K_LEFT] or keys[pygame.K_RIGHT]):
         player_1.stand()
 
+    if not player_1.is_throwing:
+        if keys[pygame.K_SPACE]:
+            player_1.throw()
+    else:
+        player_1.throw()
+
     if not player_1.is_jumping:
         if keys[pygame.K_UP]:
             player_1.jump()
@@ -36,6 +44,9 @@ while run:
 
     win.blit(bg, (0, 0))
     player_1.draw(win)
+    for bullet in player_1.thrown_obj:
+        bullet.move()
+        bullet.draw(win)
     pygame.display.update()
 
 pygame.quit()

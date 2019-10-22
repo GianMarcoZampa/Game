@@ -23,25 +23,27 @@ class Npc:
         self.dead_frames = dead_frames
 
     def jump(self):
-        if not self.is_jumping:
-            self.is_jumping = True
-        else:
-            if self.jc >= -self.jump_frames:
-                neg = 1
-                if self.jc < 0:
-                    neg = -1
-                self.y -= neg * (self.jc ** 2) * 0.5
-                self.jc -= 1
-                if self.jc % 2 is 0:
-                    self.jump_counter += 1
+        if not self.is_dying:
+            if not self.is_jumping:
+                self.is_jumping = True
             else:
-                self.is_jumping = False
-                self.jc = self.jump_frames
-                self.jump_counter = 0
+                if self.jc >= -self.jump_frames:
+                    neg = 1
+                    if self.jc < 0:
+                        neg = -1
+                    self.y -= neg * (self.jc ** 2) * 0.5
+                    self.jc -= 1
+                    if self.jc % 2 is 0:
+                        self.jump_counter += 1
+                else:
+                    self.is_jumping = False
+                    self.jc = self.jump_frames
+                    self.jump_counter = 0
 
     def stand(self):
-        self.is_running = False
-        self.walk_counter = 0
+        if not self.is_dying:
+            self.is_running = False
+            self.walk_counter = 0
 
     def look_left(self):
         self.left = True
@@ -52,41 +54,44 @@ class Npc:
         self.right = True
 
     def move_left(self):
-        self.look_left()
-        self.is_running = True
-        self.x -= self.speed
-        if self.walk_counter < 10:
-            self.walk_counter += 1
-        else:
-            self.walk_counter = 0
+        if not self.is_dying:
+            self.look_left()
+            self.is_running = True
+            self.x -= self.speed
+            if self.walk_counter < 10:
+                self.walk_counter += 1
+            else:
+                self.walk_counter = 0
 
     def move_right(self):
-        self.look_right()
-        self.is_running = True
-        self.x += self.speed
-        if self.walk_counter < 10:
-            self.walk_counter += 1
-        else:
-            self.walk_counter = 0
+        if not self.is_dying:
+            self.look_right()
+            self.is_running = True
+            self.x += self.speed
+            if self.walk_counter < 10:
+                self.walk_counter += 1
+            else:
+                self.walk_counter = 0
 
     def throw(self):
-        if not self.is_throwing:
-            self.is_throwing = True
-        else:
-            if self.shot_counter < self.shot_frames:
-                self.shot_counter += 1
-                if self.shot_counter is self.shot_frames // 2 - 1:
-                    num = 1
-                    if self.left:
-                        num = -1
-                    self.thrown_obj.append(
-                        Ammo(self.x + num * int(self.width*0.3), self.y + int(self.height*0.3), self.left))
+        if not self.is_dying:
+            if not self.is_throwing:
+                self.is_throwing = True
             else:
-                self.shot_counter = 0
-                self.is_throwing = False
+                if self.shot_counter < self.shot_frames:
+                    self.shot_counter += 1
+                    if self.shot_counter is self.shot_frames // 2 - 1:
+                        num = 1
+                        if self.left:
+                            num = -1
+                        self.thrown_obj.append(
+                            Ammo(self.x + num * int(self.width*0.3), self.y + int(self.height*0.3), self.left))
+                else:
+                    self.shot_counter = 0
+                    self.is_throwing = False
 
     def die(self):
-        if self.life is 0:
+        if self.life <= 0:
             if self.dead_frames > 1:
                 self.is_dying = True
                 self.dead_frames -= 1

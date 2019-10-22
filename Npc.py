@@ -77,7 +77,7 @@ class Npc:
                     if self.left:
                         num = -1
                     self.thrown_obj.append(
-                        Ammo(self.x + num * int(self.width * 0.3), self.y + int(self.height * 0.2), self.left))
+                        Ammo(self.x + num * int(self.width*0.3), self.y + int(self.height*0.3), self.left))
             else:
                 self.shot_counter = 0
                 self.is_throwing = False

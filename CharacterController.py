@@ -1,6 +1,7 @@
 import pygame
 
 
+# This function control pressed keys and execute the right actions, then it update player
 def player_control(player, ws, hs, win):
     keys = pygame.key.get_pressed()
 
@@ -11,8 +12,8 @@ def player_control(player, ws, hs, win):
 
     if keys[pygame.K_RIGHT]:
         player.move_right()
-        if player.x > ws - player.width * 0.5:
-            player.x = ws - player.width * 0.5
+        if player.x > ws - player.width:
+            player.x = ws - player.width
 
     if not (keys[pygame.K_LEFT] or keys[pygame.K_RIGHT]):
         player.stand()
@@ -32,6 +33,7 @@ def player_control(player, ws, hs, win):
     player.draw(win)
 
 
+# This function is for ammo handling
 def thrown_control(player, ws, hs, win):
     for bullet in player.thrown_obj:
         bullet.move()

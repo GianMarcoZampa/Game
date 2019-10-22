@@ -32,6 +32,7 @@ class Player(Npc):
 
     scaling = 0.2
 
+    # Resizing of all sprites to adapt screen size
     for image in _jump:
         _jump[_jump.index(image)] = pygame.transform.scale(image, (int(362 * scaling), int(438 * scaling)))
 
@@ -44,7 +45,7 @@ class Player(Npc):
     _idle = pygame.transform.scale(_idle, (int(232 * scaling), int(439 * scaling)))
 
     def __init__(self, x, y):
-        super().__init__(x, y, width=int(504 * self.scaling), height=int(522 * self.scaling),
+        super().__init__(x, y, width=int(232 * self.scaling), height=int(439 * self.scaling),
                          speed=15, jump_frames=10, shot_frames=10)
 
     def draw(self, win):

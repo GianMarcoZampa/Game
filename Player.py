@@ -46,7 +46,7 @@ class Player(Npc):
 
     def __init__(self, x, y):
         super().__init__(x, y, width=int(232 * self.scaling), height=int(439 * self.scaling),
-                         speed=15, jump_frames=10, shot_frames=10)
+                         speed=15, life=200, jump_frames=10, shot_frames=10)
 
     def draw(self, win):
         if self.is_jumping:

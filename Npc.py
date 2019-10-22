@@ -5,10 +5,11 @@ from Ammo import Ammo
 
 class Npc:
 
-    def __init__(self, x, y, width, height, speed, jump_frames, shot_frames):
+    def __init__(self, x, y, width, height, speed, life, jump_frames, shot_frames):
         self.x, self.y = x, y
         self.width, self.height = width, height
         self.speed = speed
+        self.life = life
         self.walk_counter = 0
         self.left, self.right = False, True
         self.is_running = False

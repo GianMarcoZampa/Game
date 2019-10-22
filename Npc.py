@@ -5,7 +5,7 @@ from Ammo import Ammo
 
 class Npc:
 
-    def __init__(self, x, y, width, height, speed, life, jump_frames, shot_frames):
+    def __init__(self, x, y, width, height, speed, life, jump_frames, shot_frames, dead_frames):
         self.x, self.y = x, y
         self.width, self.height = width, height
         self.speed = speed
@@ -15,10 +15,12 @@ class Npc:
         self.is_running = False
         self.is_jumping = False
         self.is_throwing = False
+        self.is_dying = False
         self.jump_counter = 0
         self.jc = self.jump_frames = jump_frames
         self.shot_counter, self.shot_frames = 0, shot_frames
         self.thrown_obj = []
+        self.dead_frames = dead_frames
 
     def jump(self):
         if not self.is_jumping:
@@ -82,3 +84,9 @@ class Npc:
             else:
                 self.shot_counter = 0
                 self.is_throwing = False
+
+    def die(self):
+        if self.life is 0:
+            if self.dead_frames > 1:
+                self.is_dying = True
+                self.dead_frames -= 1

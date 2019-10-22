@@ -39,7 +39,7 @@ def enemy_control(enemy, player, ws, hs, win):
         enemy.move_right()
         if enemy.x > ws - enemy.width:
             enemy.x = ws - enemy.width
-    elif player.x < enemy.x - 5 < player.x + 5:
+    elif (player.x - enemy.speed) < enemy.x < (player.x + enemy.speed):
         enemy.stand()
     else:
         enemy.move_left()

@@ -28,6 +28,14 @@ class Player(Npc):
         pygame.image.load('images/Player/Throw__008.png'), pygame.image.load('images/Player/Throw__009.png')
     ]
 
+    _dead = [
+        pygame.image.load('images/Player/Dead__000.png'), pygame.image.load('images/Player/Dead__001.png'),
+        pygame.image.load('images/Player/Dead__002.png'), pygame.image.load('images/Player/Dead__003.png'),
+        pygame.image.load('images/Player/Dead__004.png'), pygame.image.load('images/Player/Dead__005.png'),
+        pygame.image.load('images/Player/Dead__006.png'), pygame.image.load('images/Player/Dead__007.png'),
+        pygame.image.load('images/Player/Dead__008.png'), pygame.image.load('images/Player/Dead__009.png')
+    ]
+
     _idle = pygame.image.load('images/Player/Idle__000.png')
 
     scaling = 0.2
@@ -42,14 +50,19 @@ class Player(Npc):
     for image in _throw:
         _throw[_throw.index(image)] = pygame.transform.scale(image, (int(363 * scaling), int(458 * scaling)))
 
+    for image in _dead:
+        _dead[_dead.index(image)] = pygame.transform.scale(image, (int(482 * scaling), int(498 * scaling)))
+
     _idle = pygame.transform.scale(_idle, (int(232 * scaling), int(439 * scaling)))
 
     def __init__(self, x, y):
         super().__init__(x, y, width=int(232 * self.scaling), height=int(439 * self.scaling),
-                         speed=15, life=200, jump_frames=10, shot_frames=10)
+                         speed=15, life=200, jump_frames=10, shot_frames=10, dead_frames=10)
 
     def draw(self, win):
-        if self.is_jumping:
+        if self.is_dying:
+            self.dead_draw(win)
+        elif self.is_jumping:
             self.jump_draw(win)
         elif self.is_throwing:
             self.throw_draw(win)
@@ -81,3 +94,10 @@ class Player(Npc):
             win.blit(self._idle, (self.x, self.y))
         else:
             win.blit(pygame.transform.flip(self._idle, 1, 0), (self.x, self.y))
+
+    def dead_draw(self, win):
+        if self.right:
+            win.blit(self._dead[10 - self.dead_frames], (self.x, self.y))
+        else:
+            win.blit(pygame.transform.flip(self._dead[10 - self.dead_frames], 1, 0), (self.x, self.y))
+

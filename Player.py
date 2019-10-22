@@ -33,19 +33,19 @@ class Player(Npc):
     scaling = 0.2
 
     for image in _jump:
-        _jump[_jump.index(image)] = pygame.transform.scale(image, (int( 362 * scaling), int(438 * scaling)))
+        _jump[_jump.index(image)] = pygame.transform.scale(image, (int(362 * scaling), int(438 * scaling)))
 
     for image in _run:
-        _run[_run.index(image)] = pygame.transform.scale(image, (int( 363 * scaling), int(458 * scaling)))
+        _run[_run.index(image)] = pygame.transform.scale(image, (int(363 * scaling), int(458 * scaling)))
 
     for image in _throw:
-        _throw[_throw.index(image)] = pygame.transform.scale(image, (int( 363 * scaling), int(458 * scaling)))
+        _throw[_throw.index(image)] = pygame.transform.scale(image, (int(363 * scaling), int(458 * scaling)))
 
-    _idle = pygame.transform.scale(_idle, (int( 232 * scaling), int(439 * scaling)))
+    _idle = pygame.transform.scale(_idle, (int(232 * scaling), int(439 * scaling)))
 
     def __init__(self, x, y):
         super().__init__(x, y, width=int(504 * self.scaling), height=int(522 * self.scaling),
-        speed=15, jump_frames=10, shot_frames=10)
+                         speed=15, jump_frames=10, shot_frames=10)
 
     def draw(self, win):
         if self.is_jumping:
@@ -59,21 +59,21 @@ class Player(Npc):
 
     def jump_draw(self, win):
         if self.right:
-            win.blit(self._jump[self.jump_counter-1], (self.x, self.y))
+            win.blit(self._jump[self.jump_counter - 1], (self.x, self.y))
         else:
-            win.blit(pygame.transform.flip(self._jump[self.jump_counter-1], 1, 0), (self.x, self.y))
+            win.blit(pygame.transform.flip(self._jump[self.jump_counter - 1], 1, 0), (self.x, self.y))
 
     def run_draw(self, win):
         if self.right:
-            win.blit(self._run[self.walk_counter-1], (self.x, self.y))
+            win.blit(self._run[self.walk_counter - 1], (self.x, self.y))
         else:
-            win.blit(pygame.transform.flip(self._run[self.walk_counter-1], 1, 0), (self.x, self.y))
+            win.blit(pygame.transform.flip(self._run[self.walk_counter - 1], 1, 0), (self.x, self.y))
 
     def throw_draw(self, win):
         if self.right:
-            win.blit(self._throw[self.shot_counter-1], (self.x, self.y))
+            win.blit(self._throw[self.shot_counter - 1], (self.x, self.y))
         else:
-            win.blit(pygame.transform.flip(self._throw[self.shot_counter-1], 1, 0), (self.x, self.y))
+            win.blit(pygame.transform.flip(self._throw[self.shot_counter - 1], 1, 0), (self.x, self.y))
 
     def stand_draw(self, win):
         if self.right:

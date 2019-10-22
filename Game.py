@@ -1,4 +1,6 @@
 import pygame
+
+import CharacterController as Controller
 from Player import Player
 
 ws = 1000  # Screen's width
@@ -13,40 +15,17 @@ player_1 = Player(0, 600)
 
 run = True
 while run:
-    pygame.time.Clock().tick(30)
+    pygame.time.Clock().tick(60)
 
     for event in pygame.event.get():
-        if event.type == pygame.QUIT:
+        if event.type is pygame.QUIT:
             run = False
 
-    keys = pygame.key.get_pressed()
-
-    if keys[pygame.K_LEFT]:
-        player_1.move_left()
-
-    if keys[pygame.K_RIGHT]:
-        player_1.move_right()
-
-    if not (keys[pygame.K_LEFT] or keys[pygame.K_RIGHT]):
-        player_1.stand()
-
-    if not player_1.is_throwing:
-        if keys[pygame.K_SPACE]:
-            player_1.throw()
-    else:
-        player_1.throw()
-
-    if not player_1.is_jumping:
-        if keys[pygame.K_UP]:
-            player_1.jump()
-    else:
-        player_1.jump()
-
     win.blit(bg, (0, 0))
-    player_1.draw(win)
-    for bullet in player_1.thrown_obj:
-        bullet.move()
-        bullet.draw(win)
+
+    Controller.player_control(player_1, ws, hs, win)
+    Controller.thrown_control(player_1, ws, hs, win)
+
     pygame.display.update()
 
 pygame.quit()

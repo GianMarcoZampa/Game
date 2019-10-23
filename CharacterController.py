@@ -35,6 +35,7 @@ def player_control(player, ws, hs, win):
 
 # This function controls enemies
 def enemy_control(enemy, player, ws, hs, win):
+    enemy.die()
     if enemy.x < player.x:
         enemy.move_right()
         if enemy.x > ws - enemy.width:
@@ -52,10 +53,18 @@ def enemy_control(enemy, player, ws, hs, win):
 
 
 # This function is for ammo handling
-def thrown_control(player, ws, hs, win):
+def thrown_control(player, targets, ws, hs, win):
     for bullet in player.thrown_obj:
+        draw = True
         bullet.move()
         if bullet.x > ws or bullet.x < 0 - bullet.width:
-            player.thrown_obj.remove(bullet)
-        else:
+            draw = False
+        for enemy in targets:
+            if enemy.x < bullet.x < enemy.x + enemy.width and enemy.y < bullet.y < enemy.y + enemy.height:
+                enemy.life -= bullet.damage
+                draw = False
+                break
+        if draw:
             bullet.draw(win)
+        else:
+            player.thrown_obj.remove(bullet)

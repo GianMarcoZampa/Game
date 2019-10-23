@@ -25,6 +25,8 @@ enemy_1.x, enemy_1.y = ws - enemy_1.width, hs - enemy_1.height*1.6
 enemy_2 = Enemy(0, 0, False)
 enemy_2.x, enemy_2.y = 0, hs - enemy_2.height*1.6
 
+enemies = [enemy_1, enemy_2]
+
 # Main loop of the program
 run, pause = True, False
 while run:
@@ -52,7 +54,7 @@ while run:
     Controller.player_control(player_1, ws, hs, win)
     Controller.enemy_control(enemy_1, player_1, ws, hs, win)
     Controller.enemy_control(enemy_2, player_1, ws, hs, win)
-    Controller.thrown_control(player_1, ws, hs, win)
+    Controller.thrown_control(player_1, enemies, ws, hs, win)
 
     pygame.display.update()
 

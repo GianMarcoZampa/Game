@@ -3,6 +3,9 @@ import pygame
 
 # This function control pressed keys and execute the right actions, then it update player
 def player_control(player, ws, hs, win):
+
+    player.die()
+
     keys = pygame.key.get_pressed()
 
     if keys[pygame.K_LEFT]:
@@ -37,14 +40,19 @@ def player_control(player, ws, hs, win):
 def enemy_control(enemy, player, ws, hs, win):
     enemy.die()
     if enemy.x < player.x:
+        enemy.is_attacking = False
         enemy.move_right()
         if enemy.x > ws - enemy.width:
             enemy.x = ws - enemy.width
     elif (player.x - enemy.speed) < enemy.x < (player.x + enemy.speed):
         enemy.stand()
+        if(player.y + player.height) > enemy.y:
+            enemy.attack(player)
+            print(player.life, player.life_max, enemy.score)
+        else:
+            enemy.is_attacking = False
     else:
-        #enemy.life -= 5
-        #enemy.die()
+        enemy.is_attacking = False
         enemy.move_left()
         if enemy.x < 0:
             enemy.x = 0
@@ -63,7 +71,7 @@ def thrown_control(player, targets, ws, hs, win):
             if not enemy.is_dying:
                 if enemy.x < bullet.x < enemy.x + enemy.width and enemy.y < bullet.y < enemy.y + enemy.height:
                     enemy.life -= bullet.damage
-                    enemy.knockback(bullet.knockback)
+                    enemy.knock_back(bullet.knockback)
                     player.score += bullet.damage
                     print(player.score)
                     draw = False

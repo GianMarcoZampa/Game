@@ -20,6 +20,13 @@ class Enemy(Npc):
         pygame.image.load('images/Enemy/Male/Dead (9).png'), pygame.image.load('images/Enemy/Male/Dead (10).png')
     ]
 
+    _attack_male = [
+        pygame.image.load('images/Enemy/Male/Attack (1).png'), pygame.image.load('images/Enemy/Male/Attack (2).png'),
+        pygame.image.load('images/Enemy/Male/Attack (3).png'), pygame.image.load('images/Enemy/Male/Attack (4).png'),
+        pygame.image.load('images/Enemy/Male/Attack (5).png'), pygame.image.load('images/Enemy/Male/Attack (6).png'),
+        pygame.image.load('images/Enemy/Male/Attack (7).png'), pygame.image.load('images/Enemy/Male/Attack (8).png')
+    ]
+
     _idle_male = pygame.image.load('images/Enemy/Male/Idle (9).png')
 
     _walk_female = [
@@ -38,6 +45,17 @@ class Enemy(Npc):
         pygame.image.load('images/Enemy/Female/Dead (9).png'), pygame.image.load('images/Enemy/Female/Dead (10).png')
     ]
 
+    _attack_female = [
+        pygame.image.load('images/Enemy/Female/Attack (1).png'),
+        pygame.image.load('images/Enemy/Female/Attack (2).png'),
+        pygame.image.load('images/Enemy/Female/Attack (3).png'),
+        pygame.image.load('images/Enemy/Female/Attack (4).png'),
+        pygame.image.load('images/Enemy/Female/Attack (5).png'),
+        pygame.image.load('images/Enemy/Female/Attack (6).png'),
+        pygame.image.load('images/Enemy/Female/Attack (7).png'),
+        pygame.image.load('images/Enemy/Female/Attack (8).png')
+    ]
+
     _idle_female = pygame.image.load('images/Enemy/Female/Idle (9).png')
 
     scaling = 0.17
@@ -51,6 +69,10 @@ class Enemy(Npc):
     for image in _dead_male:
         _dead_male[_dead_male.index(image)] = pygame.transform.scale(image, (int(629 * scaling), int(526 * scaling)))
 
+    for image in _attack_male:
+        _attack_male[_attack_male.index(image)] = pygame.transform.scale(image,
+                                                                         (int(430 * scaling), int(519 * scaling)))
+
     for image in _walk_female:
         _walk_female[_walk_female.index(image)] = pygame.transform.scale(image,
                                                                          (int(430 * scaling), int(519 * scaling)))
@@ -61,14 +83,20 @@ class Enemy(Npc):
         _dead_female[_dead_female.index(image)] = pygame.transform.scale(image,
                                                                          (int(629 * scaling), int(526 * scaling)))
 
+    for image in _attack_female:
+        _attack_female[_attack_female.index(image)] = pygame.transform.scale(image,
+                                                                             (int(430 * scaling), int(519 * scaling)))
+
     def __init__(self, x, y, male):
         super().__init__(x, y, width=int(430 * self.scaling), height=int(519 * self.scaling),
-                         speed=5, life=150, jump_frames=0, shot_frames=0, dead_frames=10)
+                         speed=5, life=150, damage=20, attack_frames=8, dead_frames=10)
         self.male = male
 
     def draw(self, win):
         if self.is_dying:
             self.dead_draw(win)
+        elif self.is_attacking:
+            self.attack_draw(win)
         elif self.is_running:
             self.walk_draw(win)
         else:
@@ -111,6 +139,18 @@ class Enemy(Npc):
                 win.blit(pygame.transform.flip(self._dead_male[10 - self.dead_frames], 1, 0), (self.x, y))
             else:
                 win.blit(pygame.transform.flip(self._dead_female[10 - self.dead_frames], 1, 0), (self.x, y))
+
+    def attack_draw(self, win):
+        if self.right:
+            if self.male:
+                win.blit(self._attack_male[self.attack_counter], (self.x, self.y))
+            else:
+                win.blit(self._attack_female[self.attack_counter], (self.x, self.y))
+        else:
+            if self.male:
+                win.blit(pygame.transform.flip(self._attack_male[self.attack_counter], 1, 0), (self.x, self.y))
+            else:
+                win.blit(pygame.transform.flip(self._attack_female[self.attack_counter], 1, 0), (self.x, self.y))
 
     def health_bar_draw(self, win):
         green, red = self.health_bar()

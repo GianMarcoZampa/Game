@@ -5,22 +5,28 @@ from Ammo import Ammo
 
 class Npc:
 
-    def __init__(self, x, y, width, height, speed, life, jump_frames, shot_frames, dead_frames):
+    def __init__(self, x, y, width, height, speed, life, dead_frames, damage=0, knockback=0, jump_frames=0,
+                 shot_frames=0, attack_frames=0):
         self.x, self.y = x, y
         self.width, self.height = width, height
         self.speed = speed
         self.life_max = self.life = life
+        self.damage = damage
+        self.knockback = knockback
         self.walk_counter = 0
         self.left, self.right = False, True
         self.is_running = False
         self.is_jumping = False
         self.is_throwing = False
+        self.is_attacking = False
         self.is_dying = False
         self.jump_counter = 0
         self.jc = self.jump_frames = jump_frames
         self.shot_counter, self.shot_frames = 0, shot_frames
         self.thrown_obj = []
+        self.attack_counter, self.attack_frames = 0, attack_frames
         self.dead_frames = dead_frames
+        self.score = 0
 
     def jump(self):
         if not self.is_dying:
@@ -96,7 +102,22 @@ class Npc:
                 self.is_dying = True
                 self.dead_frames -= 1
 
-    def knockback(self, knockback):
+    def attack(self, target):
+        if not self.is_dying:
+            if not self.is_attacking:
+                self.is_attacking = True
+                self.attack_counter = 0
+            else:
+                if self.attack_counter < self.attack_frames-1:
+                    self.attack_counter += 1
+                    if self.attack_counter is int(self.attack_frames*0.5):
+                        target.knock_back(self.knockback)
+                        target.life -= self.damage
+                        self.score += self.damage
+                else:
+                    self.is_attacking = False
+
+    def knock_back(self, knockback):
         if self.left:
             self.x += knockback
         else:
@@ -104,7 +125,7 @@ class Npc:
 
     def health_bar(self):
         if self.life > 0:
-            life_percent = self.life/self.life_max
+            life_percent = self.life / self.life_max
         else:
             life_percent = 0
         green = pygame.rect.Rect((self.x + 6, self.y - 15), ((self.width - 6) * life_percent, 10))

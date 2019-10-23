@@ -15,6 +15,7 @@ class Ammo:
         self.width, self.height = int(160*self.scaling), int(32*self.scaling)
         self.left, self.right = left, not left
         self.damage = 20
+        self.knockback = 20
 
     def move(self):
         if self.left:

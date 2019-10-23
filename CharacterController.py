@@ -60,10 +60,14 @@ def thrown_control(player, targets, ws, hs, win):
         if bullet.x > ws or bullet.x < 0 - bullet.width:
             draw = False
         for enemy in targets:
-            if enemy.x < bullet.x < enemy.x + enemy.width and enemy.y < bullet.y < enemy.y + enemy.height:
-                enemy.life -= bullet.damage
-                draw = False
-                break
+            if not enemy.is_dying:
+                if enemy.x < bullet.x < enemy.x + enemy.width and enemy.y < bullet.y < enemy.y + enemy.height:
+                    enemy.life -= bullet.damage
+                    enemy.knockback(bullet.knockback)
+                    player.score += bullet.damage
+                    print(player.score)
+                    draw = False
+                    break
         if draw:
             bullet.draw(win)
         else:

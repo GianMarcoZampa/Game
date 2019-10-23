@@ -103,9 +103,9 @@ class Enemy(Npc):
         y = self.y + 7
         if self.right:
             if self.male:
-                win.blit(self._dead_male[self.shot_counter - 1], (self.x, y))
+                win.blit(self._dead_male[10 - self.dead_frames], (self.x, y))
             else:
-                win.blit(self._dead_female[self.shot_counter - 1], (self.x, y))
+                win.blit(self._dead_female[10 - self.dead_frames], (self.x, y))
         else:
             if self.male:
                 win.blit(pygame.transform.flip(self._dead_male[10 - self.dead_frames], 1, 0), (self.x, y))

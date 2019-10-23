@@ -96,6 +96,12 @@ class Npc:
                 self.is_dying = True
                 self.dead_frames -= 1
 
+    def knockback(self, knockback):
+        if self.left:
+            self.x += knockback
+        else:
+            self.x -= knockback
+
     def health_bar(self):
         if self.life > 0:
             life_percent = self.life/self.life_max

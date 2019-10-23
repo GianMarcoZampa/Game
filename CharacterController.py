@@ -42,7 +42,7 @@ def enemy_control(enemy, player, ws, hs, win):
     elif (player.x - enemy.speed) < enemy.x < (player.x + enemy.speed):
         enemy.stand()
     else:
-        #enemy.life -= 50
+        #enemy.life -= 5
         #enemy.die()
         enemy.move_left()
         if enemy.x < 0:

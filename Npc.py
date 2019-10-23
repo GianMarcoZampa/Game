@@ -9,7 +9,7 @@ class Npc:
         self.x, self.y = x, y
         self.width, self.height = width, height
         self.speed = speed
-        self.life = life
+        self.life_max = self.life = life
         self.walk_counter = 0
         self.left, self.right = False, True
         self.is_running = False
@@ -85,7 +85,7 @@ class Npc:
                         if self.left:
                             num = -1
                         self.thrown_obj.append(
-                            Ammo(self.x + num * int(self.width*0.3), self.y + int(self.height*0.3), self.left))
+                            Ammo(self.x + num * int(self.width * 0.3), self.y + int(self.height * 0.3), self.left))
                 else:
                     self.shot_counter = 0
                     self.is_throwing = False
@@ -95,3 +95,13 @@ class Npc:
             if self.dead_frames > 1:
                 self.is_dying = True
                 self.dead_frames -= 1
+
+    def health_bar(self):
+        if self.life > 0:
+            life_percent = self.life/self.life_max
+        else:
+            life_percent = 0
+        green = pygame.rect.Rect((self.x + 6, self.y - 15), ((self.width - 6) * life_percent, 10))
+        red = pygame.rect.Rect((self.x + 6, self.y - 15),
+                               ((self.width - 6), 10))
+        return green, red

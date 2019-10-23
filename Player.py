@@ -70,6 +70,7 @@ class Player(Npc):
             self.run_draw(win)
         else:
             self.stand_draw(win)
+        self.health_bar_draw(win)
 
     def jump_draw(self, win):
         if self.right:
@@ -101,3 +102,8 @@ class Player(Npc):
         else:
             win.blit(pygame.transform.flip(self._dead[10 - self.dead_frames], 1, 0), (self.x, self.y))
 
+    def health_bar_draw(self, win):
+        green, red = self.health_bar()
+        pygame.draw.rect(win, (255, 0, 0), red)
+        pygame.draw.rect(win, (0, 255, 0), green)
+        pygame.draw.rect(win, (0, 0, 0), red, 1)

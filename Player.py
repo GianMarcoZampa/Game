@@ -72,6 +72,7 @@ class Player(Npc):
         else:
             self.stand_draw(win)
         self.health_bar_draw(win)
+        self.score_draw(win)
 
     def jump_draw(self, win):
         if self.right:
@@ -108,3 +109,8 @@ class Player(Npc):
         pygame.draw.rect(win, (255, 0, 0), red)
         pygame.draw.rect(win, (0, 255, 0), green)
         pygame.draw.rect(win, (0, 0, 0), red, 1)
+
+    def score_draw(self, win):
+        score_percent = self.score/400
+        pygame.draw.rect(win, (255, 200, 0), (10, 10, 100*score_percent, 25))
+        pygame.draw.rect(win, (0, 0, 0), (10, 10, 100, 25), 2)

@@ -89,7 +89,7 @@ class Enemy(Npc):
 
     def __init__(self, x, y, male):
         super().__init__(x, y, width=int(430 * self.scaling), height=int(519 * self.scaling),
-                         speed=5, life=150, damage=20, attack_frames=8, dead_frames=10)
+                         speed=5, life=150, damage=20, knockback=30, attack_frames=8, dead_frames=10)
         self.male = male
 
     def draw(self, win):

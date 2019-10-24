@@ -102,20 +102,26 @@ class Npc:
                 self.is_dying = True
                 self.dead_frames -= 1
 
-    def attack(self, target):
+    def attack(self, target=None):
         if not self.is_dying:
             if not self.is_attacking:
                 self.is_attacking = True
                 self.attack_counter = 0
             else:
-                if self.attack_counter < self.attack_frames-1:
-                    self.attack_counter += 1
-                    if self.attack_counter is int(self.attack_frames*0.5):
-                        target.knock_back(self.knockback)
-                        target.life -= self.damage
-                        self.score += self.damage
+                if target is not None:
+                    if self.attack_counter < self.attack_frames-1:
+                        self.attack_counter += 1
+                        if self.attack_counter is int(self.attack_frames*0.5):
+                            target.knock_back(self.knockback)
+                            target.life -= self.damage
+                            self.score += self.damage
+                    else:
+                        self.is_attacking = False
                 else:
-                    self.is_attacking = False
+                    if self.attack_counter < self.attack_frames-1:
+                        self.attack_counter += 1
+                    else:
+                        self.is_attacking = False
 
     def knock_back(self, knockback):
         if self.left:

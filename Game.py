@@ -66,7 +66,7 @@ def entities_handler(player, enemies):
     for enemy in enemies:
         Controller.enemy_control(enemy, player, ws, hs, win)
     # Player control
-    Controller.player_control(player, ws, hs, win)
+    Controller.player_control(player, enemies, ws, hs, win)
     # Projectile control
     Controller.thrown_control(player, enemies, ws, hs, win)
 

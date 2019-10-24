@@ -61,11 +61,14 @@ class Player(Npc):
     for image in _dead:
         _dead[_dead.index(image)] = pygame.transform.scale(image, (int(482 * scaling), int(498 * scaling)))
 
+    for image in _attack:
+        _attack[_attack.index(image)] = pygame.transform.scale(image, (int(536 * scaling), int(495 * scaling)))
+
     _idle = pygame.transform.scale(_idle, (int(232 * scaling), int(439 * scaling)))
 
     def __init__(self, x, y):
         super().__init__(x, y, width=int(232 * self.scaling), height=int(439 * self.scaling), speed=15, life=200,
-                         damage=40, attack_frames=10, jump_frames=10, shot_frames=10, dead_frames=10)
+                         damage=40, knockback=30, attack_frames=10, jump_frames=10, shot_frames=10, dead_frames=10)
 
     def draw(self, win):
         if self.is_dying:

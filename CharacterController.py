@@ -2,11 +2,27 @@ import pygame
 
 
 # This function control pressed keys and execute the right actions, then it update player
-def player_control(player, ws, hs, win):
+def player_control(player, enemies, ws, hs, win):
 
     player.die()
 
     keys = pygame.key.get_pressed()
+
+    if not player.is_attacking:
+        if keys[pygame.K_m]:
+            for enemy in enemies:
+                if enemy.x < player.x + player.width*0.5 < enemy.x + enemy.width and \
+                        enemy.y < player.y + player.height*0.5 < enemy.y + enemy.height:
+                    player.attack(enemy)
+                else:
+                    player.attack()
+    else:
+        for enemy in enemies:
+            if enemy.x < player.x + player.width*0.5 < enemy.x + enemy.width and \
+                    enemy.y < player.y + player.height*0.5 < enemy.y + enemy.height:
+                player.attack(enemy)
+            else:
+                player.attack()
 
     if keys[pygame.K_LEFT]:
         player.move_left()
@@ -46,7 +62,7 @@ def enemy_control(enemy, player, ws, hs, win):
             enemy.x = ws - enemy.width
     elif (player.x - enemy.speed) < enemy.x < (player.x + enemy.speed):
         enemy.stand()
-        if(player.y + player.height) > enemy.y:
+        if(player.y + player.height) > enemy.y and not player.is_dying:
             enemy.attack(player)
             print(player.life, player.life_max, enemy.score)
         else:

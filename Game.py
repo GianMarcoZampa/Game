@@ -2,6 +2,7 @@ import pygame
 
 import CharacterController as Controller
 from Enemy import Enemy
+from EnemyGenerator import EnemyGenerator
 from Player import Player
 
 fps = 60  # Frame per second
@@ -19,14 +20,14 @@ pygame.display.set_caption('Platform Game')
 player_1 = Player(0, 0)
 player_1.x, player_1.y = ws * 0.5, hs - player_1.height * 1.6
 
-# Creating enemies
-enemy_1 = Enemy(0, 0, True)
-enemy_1.x, enemy_1.y = ws - enemy_1.width, hs - enemy_1.height * 1.6
+# Creating enemies and spawn timer
+timer = 5
+enemy = Enemy(0, 0, False)
+enemy.x, enemy.y = 0, hs - enemy.height * 1.6
 
-enemy_2 = Enemy(0, 0, False)
-enemy_2.x, enemy_2.y = 0, hs - enemy_2.height * 1.6
+enemies = [enemy]
 
-enemies = [enemy_1, enemy_2]
+spawner_1 = EnemyGenerator(0, hs - enemy.height * 1.6, timer, fps)
 
 
 def events_handler():
@@ -62,15 +63,24 @@ def entities_handler(player, enemies):
     global ws
     global hs
     global win
+    global spawner_1
+
+    enemy = spawner_1.generate()
+    if enemy is not None:
+        enemies.append(enemy)
+        spawner_1.enemy_rate -= 10
+
     # Enemies control
     for enemy in enemies:
+        if enemy.death_counter is 60:
+            enemies.remove(enemy)
         Controller.enemy_control(enemy, player, ws, hs, win)
     # Player control
     Controller.player_control(player, enemies, ws, hs, win)
     # Projectile control
     Controller.thrown_control(player, enemies, ws, hs, win)
 
-
+print(pygame.font.get_default_font())
 # Main loop of the program
 while run:
     # Clock 'fps' tick in a second

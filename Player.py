@@ -69,6 +69,7 @@ class Player(Npc):
     def __init__(self, x, y):
         super().__init__(x, y, width=int(232 * self.scaling), height=int(439 * self.scaling), speed=15, life=200,
                          damage=40, knockback=30, attack_frames=10, jump_frames=10, shot_frames=10, dead_frames=10)
+        self.power_score = 200
 
     def draw(self, win):
         if self.is_dying:
@@ -129,6 +130,16 @@ class Player(Npc):
         pygame.draw.rect(win, (0, 0, 0), red, 1)
 
     def score_draw(self, win):
-        score_percent = self.score / 400
+        score_percent = self.score / self.power_score
+        text = pygame.font.Font('freesansbold.ttf', 20).render('Power', True, (0, 0, 255))
+        if score_percent >= 1:
+            score_percent = 1
+            text = pygame.font.Font('freesansbold.ttf', 20).render('Power', True, (255, 0, 0))
         pygame.draw.rect(win, (255, 200, 0), (10, 10, 100 * score_percent, 25))
         pygame.draw.rect(win, (0, 0, 0), (10, 10, 100, 25), 2)
+        win.blit(text, (30, 14))
+
+    def use_power_1(self):
+        if self.score >= self.power_score:
+            self.score -= self.power_score
+            self.life += 20

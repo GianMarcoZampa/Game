@@ -25,7 +25,7 @@ class Npc:
         self.shot_counter, self.shot_frames = 0, shot_frames
         self.thrown_obj = []
         self.attack_counter, self.attack_frames = 0, attack_frames
-        self.dead_frames = dead_frames
+        self.death_counter, self.dead_frames = 0, dead_frames
         self.score = 0
 
     def jump(self):
@@ -101,6 +101,7 @@ class Npc:
             if self.dead_frames > 1:
                 self.is_dying = True
                 self.dead_frames -= 1
+            self.death_counter += 1
 
     def attack(self, target=None):
         if not self.is_dying:
@@ -112,8 +113,8 @@ class Npc:
                     if self.attack_counter < self.attack_frames-1:
                         self.attack_counter += 1
                         if self.attack_counter is int(self.attack_frames*0.5):
-                            target.knock_back(self.knockback)
                             target.life -= self.damage
+                            target.knock_back(self.knockback)
                             self.score += self.damage
                     else:
                         self.is_attacking = False
@@ -124,10 +125,11 @@ class Npc:
                         self.is_attacking = False
 
     def knock_back(self, knockback):
-        if self.left:
-            self.x += knockback
-        else:
-            self.x -= knockback
+        if not self.is_dying:
+            if self.left:
+                self.x += knockback
+            else:
+                self.x -= knockback
 
     def health_bar(self):
         if self.life > 0:

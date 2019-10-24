@@ -8,21 +8,8 @@ def player_control(player, enemies, ws, hs, win):
 
     keys = pygame.key.get_pressed()
 
-    if not player.is_attacking:
-        if keys[pygame.K_m]:
-            for enemy in enemies:
-                if enemy.x < player.x + player.width*0.5 < enemy.x + enemy.width and \
-                        enemy.y < player.y + player.height*0.5 < enemy.y + enemy.height:
-                    player.attack(enemy)
-                else:
-                    player.attack()
-    else:
-        for enemy in enemies:
-            if enemy.x < player.x + player.width*0.5 < enemy.x + enemy.width and \
-                    enemy.y < player.y + player.height*0.5 < enemy.y + enemy.height:
-                player.attack(enemy)
-            else:
-                player.attack()
+    if keys[pygame.K_x]:
+        player.use_power_1()
 
     if keys[pygame.K_LEFT]:
         player.move_left()
@@ -49,6 +36,25 @@ def player_control(player, enemies, ws, hs, win):
     else:
         player.jump()
 
+    if not player.is_attacking:
+        if keys[pygame.K_m]:
+            for enemy in enemies:
+                if enemy.x < player.x + player.width*0.5 < enemy.x + enemy.width and \
+                        enemy.y < player.y + player.height*0.5 < enemy.y + enemy.height and \
+                        not enemy.is_dying:
+                    player.attack(enemy)
+                    if player.is_attacking:
+                        break
+                if not player.is_attacking:
+                    player.attack()
+    else:
+        for enemy in enemies:
+            if enemy.x < player.x + player.width*0.5 < enemy.x + enemy.width and \
+                    enemy.y < player.y + player.height*0.5 < enemy.y + enemy.height:
+                player.attack(enemy)
+            else:
+                player.attack()
+
     player.draw(win)
 
 
@@ -64,7 +70,6 @@ def enemy_control(enemy, player, ws, hs, win):
         enemy.stand()
         if(player.y + player.height) > enemy.y and not player.is_dying:
             enemy.attack(player)
-            print(player.life, player.life_max, enemy.score)
         else:
             enemy.is_attacking = False
     else:

@@ -143,3 +143,5 @@ class Player(Npc):
         if self.score >= self.power_score:
             self.score -= self.power_score
             self.life += 20
+            if self.life > self.life_max:
+                self.life = self.life_max

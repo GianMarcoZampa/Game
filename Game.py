@@ -9,7 +9,7 @@ fps = 60  # Frame per second
 ws = 1000  # Screen's width
 hs = 750  # Screen's height
 bg = pygame.image.load('images/Background/BG.png')  # Background image
-run, pause = True, False  # Run of the program and pause
+run, pause, menu = True, False, True # Run of the program and pause
 
 # Setting window
 pygame.init()
@@ -28,6 +28,42 @@ enemy.x, enemy.y = 0, hs - enemy.height * 1.6
 enemies = [enemy]
 
 spawner_1 = EnemyGenerator(0, hs - enemy.height * 1.6, timer, fps)
+
+
+def menu_handler():
+    global ws
+    global hs
+    global bg
+    global win
+    global menu
+    global run
+
+    while menu:
+        pygame.time.Clock().tick(fps)
+        # Verifying quit and resize condition
+        for event in pygame.event.get():
+            # Exit command
+            if event.type is pygame.QUIT:
+                run = False
+                menu = False
+            if event.type is pygame.VIDEORESIZE:
+                ws, hs = event.w, event.h
+                win = pygame.display.set_mode((ws, hs), pygame.RESIZABLE)
+                bg = pygame.transform.scale(bg, (ws, hs))
+        # Verifying start condition
+        if pygame.key.get_pressed()[pygame.K_s]:
+            menu = False
+        # Display title and subtitle
+        win.blit(bg, (0, 0))
+        title = pygame.font.Font('freesansbold.ttf', 80).render("ENEMY DESTRUCTION", True, (0, 0, 0))
+        subtitle = pygame.font.Font('freesansbold.ttf', 50).render("press ''S'' to start", True, (0, 0, 0))
+        title_rect = title.get_rect()
+        title_rect.center = ((ws / 2), (hs / 2))
+        subtitle_rect = subtitle.get_rect()
+        subtitle_rect.center = ((ws / 2), (2 * hs / 3))
+        win.blit(title, title_rect)
+        win.blit(subtitle, subtitle_rect)
+        pygame.display.update()
 
 
 def events_handler():
@@ -52,6 +88,12 @@ def events_handler():
             if event.key is pygame.K_p:
                 pause = True
     # Pause loop
+    pause_handler()
+
+
+def pause_handler():
+    global pause
+
     while pause:
         for event in pygame.event.get():
             if event.type is pygame.KEYDOWN:
@@ -80,7 +122,9 @@ def entities_handler(player, enemies):
     # Projectile control
     Controller.thrown_control(player, enemies, ws, hs, win)
 
-print(pygame.font.get_default_font())
+
+# Start display
+menu_handler()
 # Main loop of the program
 while run:
     # Clock 'fps' tick in a second

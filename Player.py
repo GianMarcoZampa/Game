@@ -70,6 +70,7 @@ class Player(Npc):
         super().__init__(x, y, width=int(232 * self.scaling), height=int(439 * self.scaling), speed=15, life=200,
                          damage=40, knockback=30, attack_frames=10, jump_frames=10, shot_frames=10, dead_frames=10)
         self.power_score = 200
+        self.kill_count = 0
 
     def draw(self, win):
         if self.is_dying:

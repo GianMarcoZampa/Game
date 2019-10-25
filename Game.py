@@ -14,7 +14,7 @@ run, pause, menu = True, False, True # Run of the program and pause
 # Setting window
 pygame.init()
 win = pygame.display.set_mode((ws, hs), pygame.RESIZABLE)
-pygame.display.set_caption('Platform Game')
+pygame.display.set_caption('ENEMY DESTRUCTION v.1.0.0')
 
 # Creating player 1
 player_1 = Player(0, 0)
@@ -116,12 +116,23 @@ def entities_handler(player, enemies):
     for enemy in enemies:
         if enemy.death_counter is 60:
             enemies.remove(enemy)
+            player.kill_count += 1
         Controller.enemy_control(enemy, player, ws, hs, win)
     # Player control
     Controller.player_control(player, enemies, ws, hs, win)
     # Projectile control
     Controller.thrown_control(player, enemies, ws, hs, win)
 
+
+def window_handler(player):
+    global bg
+    global win
+
+    win.blit(bg, (0, 0))
+    title = pygame.font.Font('freesansbold.ttf', 20).render("Score: " + str(player.kill_count), True, (0, 0, 0))
+    title_rect = title.get_rect()
+    title_rect.topright = ( ws-10, 10)
+    win.blit(title, title_rect)
 
 # Start display
 menu_handler()
@@ -132,7 +143,7 @@ while run:
     # Handling in-game events
     events_handler()
     # Window and entities update and redraw
-    win.blit(bg, (0, 0))
+    window_handler(player_1)
     entities_handler(player_1, enemies)
     # Screen updating
     pygame.display.update()

@@ -94,7 +94,6 @@ def thrown_control(player, targets, ws, hs, win):
                     enemy.life -= bullet.damage
                     enemy.knock_back(bullet.knockback)
                     player.score += bullet.damage
-                    print(player.score)
                     draw = False
                     break
         if draw:
